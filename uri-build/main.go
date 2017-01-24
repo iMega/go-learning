@@ -5,13 +5,21 @@ import (
 	"net/url"
 )
 
+type googleQuery struct {
+	Ie string
+	Oe string
+	GwsRd string
+	Query string
+}
+
 func main() {
-	queryParams := url.Values{}
-	queryParams.Add("ie", "utf-8")
-	queryParams.Add("oe", "utf-8")
-	queryParams.Add("gws_rd", "cr")
-	queryParams.Add("q", "My learning curve")
-	query := queryParams.Encode()
+	gq := new(googleQuery)
+	gq.Ie = "utf-8"
+	gq.Oe = "utf-8"
+	gq.GwsRd = "cr"
+	gq.Query = "My learning curve"
+
+	query := BuildQuery(gq)
 
 	uri := url.URL{
 		Host: "google.com",
@@ -22,4 +30,14 @@ func main() {
 	}
 
 	fmt.Println(uri.String())
+}
+
+func BuildQuery(gq *googleQuery)string {
+	queryParams := url.Values{}
+	queryParams.Add("ie", gq.Ie)
+	queryParams.Add("oe", gq.Oe)
+	queryParams.Add("gws_rd", gq.GwsRd)
+	queryParams.Add("q", gq.Query)
+
+	return queryParams.Encode()
 }
