@@ -6,8 +6,8 @@ import (
 )
 
 type googleQuery struct {
-	Ie string
-	Oe string
+	Ie    string
+	Oe    string
 	GwsRd string
 	Query string
 }
@@ -22,22 +22,28 @@ func main() {
 	query := BuildQuery(gq)
 
 	uri := url.URL{
-		Host: "google.com",
-		Scheme: "https",
-		Path: "search",
+		Host:       "google.com",
+		Scheme:     "https",
+		Path:       "search",
 		ForceQuery: true,
-		RawQuery: query,
+		RawQuery:   query,
 	}
 
 	fmt.Println(uri.String())
 }
 
-func BuildQuery(gq *googleQuery)string {
+func BuildQuery(gq *googleQuery) string {
+	/*
 	queryParams := url.Values{}
 	queryParams.Add("ie", gq.Ie)
 	queryParams.Add("oe", gq.Oe)
-	queryParams.Add("gws_rd", gq.GwsRd)
 	queryParams.Add("q", gq.Query)
+	*/
+	queryParams := url.Values{
+		"ie": []string{gq.Ie},
+		"oe": []string{gq.Oe},
+		"q":  []string{gq.Query},
+	}
 
 	return queryParams.Encode()
 }
