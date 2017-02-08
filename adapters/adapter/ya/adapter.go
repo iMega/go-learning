@@ -1,33 +1,48 @@
 package ya
 
 import (
-	"github.com/imega/go-learning/adapters/gateway"
 	"net/http"
+	"github.com/imega/go-learning/adapters/gateway"
 )
 
-type YaAdapter struct {
+// Идентификаторы способов платежей
+var payMethods = []string{"ac", "pc", "gp"}
+
+type adapter struct {
 	ShopId    string
 	PayMethod string
 }
 
-func (YaAdapter) Pay(payer string, order string) string {
+func (adapter) Pay(payer string, order string) string {
 	return "ya-adapter"
 }
 
-func (YaAdapter) Handler(req gateway.Request) YaAdapter {
-	return YaAdapter{}
+func (adapter) Handler(req gateway.Request) adapter {
+	return adapter{}
 }
 
+// регистрация адаптера
 func Invoke(srv *http.ServeMux) gateway.Adapter {
-	srv.HandleFunc("/secure/payments/yandex/check_payment", checkPayment)
-	srv.HandleFunc("/secure/payments/yandex/incoming_payment", incomePayment)
+	srv.HandleFunc("/payments/yandex/check", checkPayment)
+	srv.HandleFunc("/payments/yandex/incoming", incomePayment)
 
-	a := YaAdapter{
+	a := adapter{
 		ShopId: "sdf",
 	}
+
 	return a
 }
 
-func (a YaAdapter) GetId () string {
+// Получить идентификатор адаптера
+func (a adapter) GetId () string {
 	return "ya-adapter"
+}
+
+// получить способы платежей
+func (a adapter) GetMethods() gateway.PayMethods {
+	methods := gateway.PayMethods{
+		a.GetId(): payMethods,
+	}
+
+	return methods
 }

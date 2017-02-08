@@ -6,13 +6,17 @@ import (
 )
 
 var (
-	adapters = make(map[string]Adapter)
+	adapters   = make(map[string]Adapter)
+	payMethods = make(map[string][]string)
 )
 
 type Adapter interface {
 	GetId() string
-	Pay(payer string, order string) string
+	//Pay(payer string, order string) string
+	//GetMethods() PayMethods
 }
+
+//type PayMethods map[string][]string
 
 type Request struct {
 	Data string
@@ -38,4 +42,12 @@ func Listen(AdapterId string) string {
 
 func Add(a Adapter) {
 	adapters[a.GetId()] = a
+}
+
+func GetMethods() PayMethods {
+	for id, adapter := range adapters {
+		m := adapter.GetMethods()
+		payMethods[id] = m[id]
+	}
+	return payMethods
 }

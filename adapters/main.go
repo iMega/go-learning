@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/imega/go-learning/adapters/gateway"
-	//"fmt"
-	"github.com/imega/go-learning/adapters/adapter/dol"
 	"net/http"
+
+	"github.com/imega/go-learning/adapters/adapter/other"
 	"github.com/imega/go-learning/adapters/adapter/ya"
+	"github.com/imega/go-learning/adapters/gateway"
 )
 
 func main() {
@@ -24,8 +24,15 @@ func main() {
 	//response := gateway.Listen("dol-adapter")
 
 	mux := http.NewServeMux()
-	gateway.Add(dol.Invoke(mux))
+	gateway.Add(other.Invoke(mux))
 	gateway.Add(ya.Invoke(mux))
+
+	//account := Account{
+	//	Id: "4004545",
+	//}
+
+	//account.AllowPayMethods(gateway.GetMethods())
+
 	//mux.HandleFunc("/", gateway.AcceptPaymentHandler)
 
 	//dol.Handler(mux)

@@ -1,4 +1,4 @@
-package dol
+package other
 
 import (
 	"io"
