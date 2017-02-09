@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"reflect"
+)
 
 type Money struct {
 	// The 3-letter currency code defined in ISO 4217.
@@ -35,4 +39,9 @@ func main() {
 	}
 
 	fmt.Println(order)
+	b, _ := strconv.ParseBool("true")
+	d := reflect.ValueOf(b)
+	c := strconv.FormatBool(true)
+	z := reflect.ValueOf(c)
+	fmt.Println(d.Kind(), z.Kind())
 }
